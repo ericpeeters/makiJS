@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="nl">
+	<head>
+	    <meta charset="utf-8" />
+        <!-- Customer stylesheet -->
+        <link rel="stylesheet" href="Css/gaslicht.css" />   
+	</head>
+
+    <!-- Include Proto styling -->
+    <link href="Css/maki.css" rel="stylesheet" />
+    
+    <body>
+
+      <section class="container"></section>
+
+    	<script src="Scripts/jquery.min.js"></script>
+        
+        <script src="Scripts/maki.min.js"></script>     
+        <script src="Scripts/maki.config.js"></script>
+        
+		<script>
+
+		    $('.container').maki({
+                content: "h1>{Welcome to maki!}",
+                codeView: false,
+                copyControls: false,
+                clearfix: true
+            });
+
+       </script>
+
+    </body>
+</html>
