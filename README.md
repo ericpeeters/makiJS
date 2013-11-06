@@ -46,4 +46,4 @@ jQuery - [http://www.jquery.com](http://www.jquery.com "jQuery")<br>
 jQuery-ZenCoding.js - [https://github.com/zodoz/jquery-ZenCoding](https://github.com/zodoz/jquery-ZenCoding "jQuery Zen Coding")<br>
 Prettify.js - [https://code.google.com/p/google-code-prettify/](https://code.google.com/p/google-code-prettify/ "Prettify")<br>
 Emmet - [http://emmet.io/](http://emmet.io/ "Emmet")
-
+ZeroClipboard - [https://github.com/zeroclipboard/zeroclipboard](https://github.com/zeroclipboard/zeroclipboard "ZeroClipboard")
