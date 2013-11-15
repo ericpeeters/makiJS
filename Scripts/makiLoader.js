@@ -16,13 +16,12 @@
         // Store default maki settings
         this.settings = {
             content: "h1>{Welcome to maki!}",
-            contentSrc: false, // Still in development
             codeView: false,
             copyControls: false,
             clearfix: true,
             hash: false,
             path: "/Scripts/makiSrc",
-            debug: true // For development
+            debug: false
         };
 
         // Set codeView variable equal to the copyControls
