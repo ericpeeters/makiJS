@@ -13,37 +13,37 @@ The plugin accepts a list of Emmet syntax formatted strings to create a stylegui
 To use it in your project, call it on a jQuery selector of choice with the following properties:
 
     $(target).maki({
-		content:        [] || "",          
+		content:        [] || "...",          
 		copyControls:   true || false,
 		codeView:       true || false,
-    	clearfix:       true || false
+    	clearfix:       true || false,
+    	hash:			"..." || "#..." || false,
+    	path:			"..." || false,
+    	debug:			true || false
 	});
 
 ##Properties
 
 ###content:
-	typeof content == "Array" || "String";
-> An array of emmet strings or a single emmet string, also you can add a multidimensional array to extract elements into different groups and re use them in multiple cases
+An array of emmet strings or a single emmet string, also allows for a multidimensional array to extract elements into different arrays and re use them in multiple cases
 
-***
-
-###copyControls: 
-	typeof copyControls == "Boolean";
-> A boolean that allows you to add Copy Emmet & Copy HTML buttons
-
-***
+###copyControls 
+A boolean that allows you to add Copy Emmet & Copy HTML buttons
 
 ###codeView: 
-	typeof codeView == "Boolean";
-> A boolean that allows you to add a codeView to every element <br>
-> (inherits from copyControls by defaults and can only be activated if copyControls == true)
-
-
-***
+A boolean that allows you to add a codeView to every element (inherits from copyControls by default and can only be activated if the copyControls property is set to true)
 
 ###clearfix: 
-	typeof clearfix == "Boolean";
-> A boolean that adds the clearfix class to each element in the styleguide to give it breathing room
+A boolean that adds the clearfix class to each element in the styleguide to give it breathing room
+
+###hash: 
+A string that allows you to specify a hash that maki will trigger on
+
+###path
+A string that allows you to specify a path where to load the dependencies from
+
+###debug
+A boolean that allows you to toggle loading in the minified/non-minified dependencies
 
 ##Thanks to
 Redhotminute - [http://www.redhotminute.com](http://www.redhotminute.com "Redhotminute")<br>
