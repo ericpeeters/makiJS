@@ -1,3 +1,13 @@
+                    __           _____  ____       
+                   /\ \      __ /\___ \/\  _`\     
+  ___ ___      __  \ \ \/'\ /\_\\/__/\ \ \,\L\_\   
+/' __` __`\  /'__`\ \ \ , < \/\ \  _\ \ \/_\__ \   
+/\ \/\ \/\ \/\ \L\.\_\ \ \\`\\ \ \/\ \_\ \/\ \L\ \ 
+\ \_\ \_\ \_\ \__/.\_\\ \_\ \_\ \_\ \____/\ `\____\
+ \/_/\/_/\/_/\/__/\/_/ \/_/\/_/\/_/\/___/  \/_____/
+                                                   
+
+
 # makiJS #
 
 **makiJS** is a jQuery plugin for rapid page prototyping.
@@ -45,5 +55,5 @@ Redhotminute - [http://www.redhotminute.com](http://www.redhotminute.com "Redhot
 jQuery - [http://www.jquery.com](http://www.jquery.com "jQuery")<br>
 jQuery-ZenCoding.js - [https://github.com/zodoz/jquery-ZenCoding](https://github.com/zodoz/jquery-ZenCoding "jQuery Zen Coding")<br>
 Prettify.js - [https://code.google.com/p/google-code-prettify/](https://code.google.com/p/google-code-prettify/ "Prettify")<br>
-Emmet - [http://emmet.io/](http://emmet.io/ "Emmet")<br>
-ZeroClipboard - [https://github.com/zeroclipboard/zeroclipboard](https://github.com/zeroclipboard/zeroclipboard "ZeroClipboard")
+Emmet - [http://emmet.io/](http://emmet.io/ "Emmet")
+
