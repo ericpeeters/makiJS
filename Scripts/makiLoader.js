@@ -111,7 +111,7 @@
 
             if (location.hash == "#maki-init" && window.__makiSettings.init == true) {
                 loadMakiDependencies();
-                makiJS.init(settings, $el);
+                makiJS.create(settings, $el);
             } else if (location.hash !== "#maki-init" && window.__makiSettings.init == true) {
                 location.reload();
             }
@@ -119,7 +119,7 @@
 
         if (!settings.hash) {
             loadMakiDependencies();
-            makiJS.init(settings, $el);
+            makiJS.create(settings, $el);
         }
 
     } /* End jQuery.prototype.maki */

@@ -1,7 +1,7 @@
 var makiJS = {
-    init: function(settings, $this) {
+    create: function(settings, $this) {
 
-        /** 
+            /** 
                 @func       =spaceWarning
                 @desc       function to output a warning in the console
                 @param      i | index of the item in the content array
@@ -59,15 +59,15 @@ var makiJS = {
                 e = whiteSpaceCheck(i, e);
                 e = loremReplace(e);
 
-                var $emmetWrapper = $('<div class="emmetWrapper clearfix"><div class="emmetBtnWrapper"><button class="btnCopyEmmet">Copy Emmet</button> <button class="btnCopyHTML">Copy HTML</button></div></div>').data('emmet', e),
-                    $emmetSnippet = $('<div class="emmetSnippet clearfix"/>').zencode(e);
+                var $makiWrapper = $('<div class="makiWrapper clearfix"><div class="makiBtnWrapper"><button class="btnCopyEmmet">Copy Emmet</button> <button class="btnCopyHTML">Copy HTML</button></div></div>').data('maki', e),
+                    $makiSnippet = $('<div class="makiSnippet clearfix"/>').zencode(e);
 
-                $this.append($emmetWrapper.prepend($emmetSnippet));
+                $this.append($makiWrapper.prepend($makiSnippet));
 
                 if (settings.codeView == true) {
-                    var emmetHTML = $('div.emmetSnippet').eq(i).html(),
-                        codeView = $("<pre class='prettyprint' />").text(emmetHTML),
-                        $eWrapper = $('div.emmetWrapper').eq(i);
+                    var makiHTML = $('div.makiSnippet').eq(i).html(),
+                        codeView = $("<pre class='prettyprint' />").text(makiHTML),
+                        $eWrapper = $('div.makiWrapper').eq(i);
                     $eWrapper.append(codeView);
                 }
             });
@@ -82,32 +82,32 @@ var makiJS = {
                 e = whiteSpaceCheck(i, e);
                 e = loremReplace(e);
 
-                var $emmetWrapper = $('<span />').data('emmet', e),
-                    $emmetSnippet = $('<span />').zencode(e);
+                var $makiWrapper = $('<span />').data('maki', e),
+                    $makiSnippet = $('<span />').zencode(e);
 
                 if (settings.clearfix) {
-                    $emmetSnippet.addClass('clearfix');
+                    $makiSnippet.addClass('clearfix');
                 }
 
-                $this.append($emmetWrapper.prepend($emmetSnippet));
+                $this.append($makiWrapper.prepend($makiSnippet));
             });
         }
 
-        // Create the buttons to copy Emmet/HTML with
-        var copyButtons = $('button.btnCopyEmmet, button.btnCopyHTML');
+        // Create the buttons to copy emmet/HTML with
+        var copyButtons = $('button.btnCopymaki, button.btnCopyHTML');
         var clip = new ZeroClipboard(copyButtons);
 
         // As soon as the data is requested from one of the buttons, copy the right content to the clipboard */
         clip.on('dataRequested', function(client, args) {
             $('.copyNotification').remove();
             var snippet = "";
-            if ($(this).hasClass('btnCopyEmmet')) {
-                snippet = $(this).parents('.emmetWrapper').data('emmet');
-                $(this).parents('.emmetBtnWrapper').append($('<div class="copyNotification">Copied Emmet!</div>'));
+            if ($(this).hasClass('btnCopymaki')) {
+                snippet = $(this).parents('.makiWrapper').data('maki');
+                $(this).parents('.makiBtnWrapper').append($('<div class="copyNotification">Copied maki!</div>'));
             }
             if ($(this).hasClass('btnCopyHTML')) {
-                snippet = $(this).parents('.emmetWrapper').find('.emmetSnippet').html();
-                $(this).parents('.emmetBtnWrapper').append($('<div class="copyNotification">Copied HTML!</div>'));
+                snippet = $(this).parents('.makiWrapper').find('.makiSnippet').html();
+                $(this).parents('.makiBtnWrapper').append($('<div class="copyNotification">Copied HTML!</div>'));
             }
             clip.setText(snippet);
 
@@ -116,6 +116,6 @@ var makiJS = {
             });
         });
 
-    } /* End createMaki */
+    } /* End makiJS.init */
 
 };
