@@ -57,6 +57,7 @@
         // Finally, store a settings array in the global scope
         window.__makiSettings = settings;
 
+        
         function loadMakiDependencies() {
             var scripts = $('body').find('script');
             var makiMatch;

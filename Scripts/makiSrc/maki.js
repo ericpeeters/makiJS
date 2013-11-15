@@ -1,12 +1,25 @@
+/* 
+@obj    makiJS
+@desc   The object that holds all maki's methods
+*/
+
 var makiJS = {
+
+    /** 
+    @func       =create
+    @namespace  =makiJS
+    @param      settings | maki's settings object
+    @param      $this | The element selected
+    @return     A warning in the console
+    **/
     create: function(settings, $this) {
 
             /** 
-                @func       =spaceWarning
-                @desc       function to output a warning in the console
-                @param      i | index of the item in the content array
-                @param      c | index (char) of the  position of the space in the object
-                @return     A warning in the console
+            @func       =spaceWarning
+            @desc       function to output a warning in the console
+            @param      i | index of the item in the content array
+            @param      c | index (char) of the  position of the space in the object
+            @return     A warning in the console
             **/
         var spaceWarning = function(i, c) {
             console.warn("Warning! Space detected on char " + c + ", in item " + i + ": " + settings.content[i]);
@@ -52,6 +65,7 @@ var makiJS = {
                 return e;
             };
 
+        // If there is content filled in and copyControls are enabled 
         if (settings.content.length && settings.copyControls == true) {
             // Loop through the content array and display the needed elements on the screen
             $.each(settings.content, function(i, e) {
@@ -116,6 +130,6 @@ var makiJS = {
             });
         });
 
-    } /* End makiJS.init */
+    } /* End makiJS.create */
 
-};
+};/* End makiJS object */
