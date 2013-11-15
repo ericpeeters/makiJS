@@ -3,11 +3,16 @@
 
     /* jQuery.prototype.maki */
     $.fn.maki = function(overrides) {
-
+        
 
         // If there are no overrides, create an empty overrides object
         if (!overrides) {
             var overrides = {};
+        }
+
+        if (overrides.contentSrc) {
+            var contentSrc = (settings.contentSrc.indexOf('/') == 0) ? settings.contentSrc : settings.path + settings.contentSrc;
+            $.getScript(contentSrc);
         }
 
         // Cache element context wrapped in jQuery
@@ -16,6 +21,7 @@
         // Store default maki settings
         this.settings = {
             content: "h1>{Welcome to maki!}",
+            contentSrc: false,
             codeView: false,
             copyControls: false,
             clearfix: true,
@@ -91,9 +97,8 @@
             }
 
             if (settings.contentSrc) {
-                var contentSrc = document.createElement('script');
-                contentSrc.src = (settings.contentSrc.indexOf('/') == 0) ? settings.contentSrc : settings.path + settings.contentSrc;
-                makiMatch.after(contentSrc);
+                var contentSrc = (settings.contentSrc.indexOf('/') == 0) ? settings.contentSrc : settings.path + settings.contentSrc;
+                $.getScript(contentSrc);
             }
         }
 
