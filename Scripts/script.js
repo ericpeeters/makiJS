@@ -1,12 +1,14 @@
 $(document).ready(function() {
 
-	var buttons = ['button>{buttons}','button>{button2}','button>{button3}'];
-	var headers = ['h1>{buttonba}','h1>{buttonda}','h1>{button3}'];
+	var buttons = [ 'button>{Button 1}', 'button>{Button 2}', 'button>{Button 3}'],
+		headers = [ 'h1>{Header 1}', 'h1>{Header 2}', 'h1>{Header 3}'];
 
 	$('.container').maki({
-		content: [ buttons, headers ],
+		content: "h1>{Hi}",
+		clearfix: true,
 		hash: "proto",
-		copyControls: true
+		path: 'Scripts/makiSrc',
+		debug: true
 	});
 
 });

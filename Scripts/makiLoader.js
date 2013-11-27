@@ -3,11 +3,16 @@
 
     /* jQuery.prototype.maki */
     $.fn.maki = function(overrides) {
-
+        
 
         // If there are no overrides, create an empty overrides object
         if (!overrides) {
             var overrides = {};
+        }
+
+        if (overrides.contentSrc) {
+            var contentSrc = (settings.contentSrc.indexOf('/') == 0) ? settings.contentSrc : settings.path + settings.contentSrc;
+            $.getScript(contentSrc);
         }
 
         // Cache element context wrapped in jQuery
@@ -17,6 +22,7 @@
         // Store default maki settings
         this.defaults = {
             content: "h1>{Welcome to maki!}",
+            contentSrc: false,
             codeView: false,
             copyControls: false,
             clearfix: true,
@@ -54,69 +60,53 @@
         if (settings.path.indexOf('/') == 0) {
             settings.path = settings.path.substr(1);
         }
+<<<<<<< HEAD
 
         // Finally, store a settings array in the global scope
         var __makiSettings = [];
         __makiSettings.push(settings);
         window.__makiSettings.push(settings);
 
+=======
+>>>>>>> dev
         
         function loadMakiDependencies() {
-            var scripts = $('body').find('script');
-            var makiMatch;
-            for (var i = 0, len = scripts.length; i < len; i++) {
-                if ($(scripts[i]).attr('src').indexOf('makiLoader.js') > -1) {
-                    makiMatch = $(scripts[i]);
-                }
-            }
+            $.ajaxSetup({
+                async: false,
+                cache: false
+            });    
 
-            var makiSrc = document.createElement('script');
-            makiSrc.src = settings.path + "maki.js";
-            makiMatch.after(makiSrc);
+            $.getScript(settings.path + "maki.js");
             if (settings.debug == true) {
-                var prettify = document.createElement('script');
-                prettify.src = settings.path + "prettify.js";
-                makiMatch.after(prettify);
-
-                var zenCoding = document.createElement('script');
-                zenCoding.src = settings.path + "jquery.zencoding.js";
-                zenCoding.src = settings.path + "jquery.zencoding.js";
-                makiMatch.after(zenCoding);
-
-                var ZeroClipboard = document.createElement('script');
-                ZeroClipboard.src = settings.path + "ZeroClipboard.js";
-                ZeroClipboard.src = settings.path + "ZeroClipboard.js";
-                makiMatch.after(ZeroClipboard);
+                $.getScript(settings.path + "prettify.js");
+                $.getScript(settings.path + "jquery.zencoding.js");
+                $.getScript(settings.path + "ZeroClipboard.js");
             } else {
-                var makiDependencies = document.createElement('script');
-                makiDependencies.src = settings.path + "makiDependencies.min.js";
-                makiMatch.after(makiDependencies);
+                $.getScript(settings.path + "makiDependencies.min.js");
             }
-
             if (settings.contentSrc) {
-                var contentSrc = document.createElement('script');
-                contentSrc.src = (settings.contentSrc.indexOf('/') == 0) ? settings.contentSrc : settings.path + settings.contentSrc;
-                makiMatch.after(contentSrc);
+                var contentSrc = (settings.contentSrc.indexOf('/') == 0) ? settings.contentSrc : settings.path + settings.contentSrc;
+                $.getScript(contentSrc);
             }
         }
 
         // Keep a property of whether maki is activated or not
-        window.__makiSettings.init = false;
+        settings.init = false;
 
         if (settings.hash && location.hash == settings.hash) {
             location.hash = "#maki-init";
-            window.__makiSettings.init = true;
+            settings.init = true;
         }
 
         $(window).on('hashchange', function() {
-            if (settings.hash && location.hash == settings.hash && window.__makiSettings.init == false) {
-                window.__makiSettings.init = true;
+            if (settings.hash && location.hash == settings.hash && settings.init == false) {
+                settings.init = true;
             }
 
-            if (location.hash == "#maki-init" && window.__makiSettings.init == true) {
+            if (location.hash == "#maki-init" && settings.init == true) {
                 loadMakiDependencies();
                 makiJS.create(settings, $el);
-            } else if (location.hash !== "#maki-init" && window.__makiSettings.init == true) {
+            } else if (location.hash !== "#maki-init" && settings.init == true) {
                 location.reload();
             }
         });
