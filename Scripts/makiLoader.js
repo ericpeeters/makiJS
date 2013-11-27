@@ -66,9 +66,7 @@
             settings.path = settings.path.substr(1);
         }
 
-        
         function loadMakiDependencies() {
-
             $.getScript(settings.path + "maki.js");
             if (settings.debug == true) {
                 $.getScript(settings.path + "prettify.js");
