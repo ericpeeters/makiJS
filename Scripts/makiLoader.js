@@ -11,10 +11,11 @@
         }
 
         // Cache element context wrapped in jQuery
-        var $el = $(this);
+        var el = this,
+            $el = $(this);
 
         // Store default maki settings
-        this.settings = {
+        this.defaults = {
             content: "h1>{Welcome to maki!}",
             codeView: false,
             copyControls: false,
@@ -25,9 +26,9 @@
         };
 
         // Set codeView variable equal to the copyControls
-        overrides.codeView = (overrides.codeView) ? overrides.codeView : this.settings.copyControls;
+        overrides.codeView = (overrides.codeView) ? overrides.codeView : this.defaults.copyControls;
         // Extend the settings with the overrides
-        var settings = $.extend({}, this.settings, overrides);
+        var settings = $.extend({}, this.defaults, overrides);
 
         // If the contents of settings.content is an array or multiple, if so: concat them
         if ($.isArray(settings.content[0])) {
@@ -55,7 +56,9 @@
         }
 
         // Finally, store a settings array in the global scope
-        window.__makiSettings = settings;
+        var __makiSettings = [];
+        __makiSettings.push(settings);
+        window.__makiSettings.push(settings);
 
         
         function loadMakiDependencies() {
