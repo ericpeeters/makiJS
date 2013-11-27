@@ -11,4 +11,12 @@ $(document).ready(function() {
 		debug: true
 	});
 
+	$('.container').maki({
+		content: "h1>{Bye}",
+		clearfix: true,
+		hash: "#pro",
+		path: 'Scripts/makiSrc',
+		debug: true
+	});
+
 });

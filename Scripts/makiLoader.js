@@ -1,9 +1,14 @@
 ;
 (function($, window, document, undefined) {
+    window.__makiSettings = [];
 
     /* jQuery.prototype.maki */
     $.fn.maki = function(overrides) {
         
+        $.ajaxSetup({
+            async: false,
+            cache: false
+        });    
 
         // If there are no overrides, create an empty overrides object
         if (!overrides) {
@@ -60,21 +65,9 @@
         if (settings.path.indexOf('/') == 0) {
             settings.path = settings.path.substr(1);
         }
-<<<<<<< HEAD
 
-        // Finally, store a settings array in the global scope
-        var __makiSettings = [];
-        __makiSettings.push(settings);
-        window.__makiSettings.push(settings);
-
-=======
->>>>>>> dev
         
         function loadMakiDependencies() {
-            $.ajaxSetup({
-                async: false,
-                cache: false
-            });    
 
             $.getScript(settings.path + "maki.js");
             if (settings.debug == true) {
@@ -115,6 +108,9 @@
             loadMakiDependencies();
             makiJS.create(settings, $el);
         }
+
+        // Finally, store a settings array in the global scope
+        window.__makiSettings.push(settings);
 
     } /* End jQuery.prototype.maki */
 
