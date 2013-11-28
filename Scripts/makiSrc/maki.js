@@ -5,6 +5,93 @@
 
 var makiJS = {
 
+    setup: function(overrides, defaults) {
+        // Set codeView variable equal to the copyControls if not defined
+        overrides.codeView = (overrides.codeView) ? overrides.codeView : defaults.copyControls;
+        // Merge the defaults and overrides in a settings variable
+        var settings = $.extend({}, defaults, overrides);
+
+        // If contentSrc is filled in, load in that source
+        if (settings.contentSrc) {
+            settings.contentSrc = (settings.contentSrc.indexOf('/') == 0) ? settings.contentSrc : settings.path + "/" + settings.contentSrc;
+            
+            this.loadConfig(settings);
+        }
+
+        // If the contents of settings.content is an array or multiple, if so: concat them
+        if ($.isArray(settings.content[0])) {
+            for (var i = 0, len = settings.content.length; i < len; ++i) {
+                settings.content += settings.content[i - 1];
+            }
+            settings.content = settings.content.split(',');
+        }
+        // Check if hash does not contain a hash, if not: put a hash in front of the given string
+        if (settings.hash && settings.hash.indexOf('#') < 0) {
+            settings.hash = '#' + settings.hash;
+        }
+
+        // Check if content is a string, and if so. Convert it to an array.
+        if (typeof settings.content == "string") {
+            var comma = (settings.content.indexOf(', ') !== -1) ? ', ' : ',';
+            settings.content = settings.content.split(comma);
+        }
+
+        // Check if path has a slash at the end, if not: add it on there
+        if (settings.path && settings.path.indexOf('/') > -1 && settings.path.lastIndexOf('/') !== settings.path.length - 1) {
+            settings.path = settings.path + "/";
+        }
+        // Check if path has a slash at the beginning, if so: strip it off
+        if (settings.path.indexOf('/') == 0) {
+            settings.path = settings.path.substr(1);
+        }
+
+        return settings;
+    },
+    /* End makiJS.setup */
+
+    loadConfig: function(settings) {
+        var sc = settings.contentSrc,
+            extension = sc.indexOf('.txt') !== -1 ? "text" : "json";
+
+            console.log(settings.content.indexOf('>'));        
+
+        $.ajax({
+            dataType: extension,
+            url: sc,
+            success: function(resp) {
+                if (typeof settings.content == 'string' && settings.content.indexOf('>') == -1) {
+                    var elemArr = settings.content;
+                }                    
+
+                if (extension == "text") {
+                    settings.content = resp.split('\n');
+                } else if (extension == "json") {
+                    settings.content = (elemArr !== undefined && resp[elemArr] !== null) ? resp[elemArr] : resp.elements;                        
+                }
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    },
+
+    /** 
+    @func       =loadMakiDependencies
+    @namespace  =jQuery.prototype.maki
+    @desc       Loads maki's dependencies
+    **/
+    loadDependencies: function(settings) {
+        // If debug is set to true, load in all depedencies individually
+        if (settings.debug == true) {
+            $.getScript(settings.path + "prettify.js");
+            $.getScript(settings.path + "jquery.zencoding.js");
+            $.getScript(settings.path + "ZeroClipboard.js");
+        } else { // Load in a minified file of all dependencies
+            $.getScript(settings.path + "makiDependencies.min.js");
+        }
+    },
+    /* End makiJS.loadDependencies */
+
     /** 
     @func       =create
     @namespace  =makiJS
@@ -14,7 +101,7 @@ var makiJS = {
     **/
     create: function(settings, $this) {
 
-            /** 
+        /** 
             @func       =spaceWarning
             @desc       function to output a warning in the console
             @param      i | index of the item in the content array
@@ -132,4 +219,5 @@ var makiJS = {
 
     } /* End makiJS.create */
 
-};/* End makiJS object */
+
+}; /* End makiJS object */

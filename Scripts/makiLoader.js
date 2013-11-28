@@ -1,26 +1,21 @@
 ;
-(function($, window, document, undefined) {
+(function ($, window, document, undefined) {
+    "use strict";
     // Create a global makiSettings array to fill with settings objects
     window.__makiSettings = [];
 
     /* jQuery.prototype.maki */
-    $.fn.maki = function(overrides) {
+    $.fn.maki = function (overrides) {
         
         // Make sure all the ajax requests are sync and nothing is cached
         $.ajaxSetup({
             async: false,
             cache: false
-        });    
+        });
 
         // If there are no overrides, create an empty overrides object
         if (!overrides) {
-            var overrides = {};
-        }
-        
-        // If contentSrc is filled in, make sure it is formatted correctly
-        if (overrides.contentSrc) {
-            var contentSrc = (settings.contentSrc.indexOf('/') == 0) ? settings.contentSrc : settings.path + settings.contentSrc;
-            $.getScript(contentSrc);
+            overrides = {};
         }
 
         // Cache element context incl one wrapped in jQuery
@@ -38,61 +33,24 @@
             path: "/Scripts/makiSrc",
             debug: false
         };
-
-        // Set codeView variable equal to the copyControls if not defined
-        overrides.codeView = (overrides.codeView) ? overrides.codeView : this.defaults.copyControls;
-        // Merge the defaults and overrides in a settings variable
-        var settings = $.extend({}, this.defaults, overrides);
-
-        // If the contents of settings.content is an array or multiple, if so: concat them
-        if ($.isArray(settings.content[0])) {
-            for (var i = 0, len = settings.content.length; i < len; ++i) {
-                settings.content += settings.content[i - 1];
-            }
-            settings.content = settings.content.split(',');
-        }
-        // Check if hash does not contain a hash, if not: put a hash in front of the given string
-        if (settings.hash && settings.hash.indexOf('#') < 0) {
-            settings.hash = '#' + settings.hash;
-        }
-        // Check if content is a string, and if so. Convert it to an array.
-        if (typeof settings.content == "string") {
-            var comma = (settings.content.indexOf(', ') !== -1) ? ', ' : ',';
-            settings.content = settings.content.split(comma);
-        }
-        // Check if path has a slash at the end, if not: add it on there
-        if (settings.path && settings.path.indexOf('/') > -1 && settings.path.lastIndexOf('/') !== settings.path.length - 1) {
-            settings.path = settings.path + "/";
-        }
-        // Check if path has a slash at the beginning, if so: strip it off
-        if (settings.path.indexOf('/') == 0) {
-            settings.path = settings.path.substr(1);
+        
+        if(overrides.hash && overrides.hash.indexOf('#') !== 0) {
+            overrides.hash = '#' + overrides.hash;
         }
 
+        // Load in maki.js
+        if (overrides.hash && overrides.hash == location.hash) {
+            var makiPath = (typeof overrides.path !== 'undefined') ? overrides.path + "/" : "/Scripts/makiSrc/";
+            $.getScript(makiPath + "maki.js");
 
-        /** 
-        @func       =loadMakiDependencies
-        @namespace  =jQuery.prototype.maki
-        @desc       Loads maki's dependencies
-        **/
-        function loadMakiDependencies() {
-            // Load in maki.js
-            $.getScript(settings.path + "maki.js");
-
-            // If debug is set to true, load in all depedencies individually
-            if (settings.debug == true) {
-                $.getScript(settings.path + "prettify.js");
-                $.getScript(settings.path + "jquery.zencoding.js");
-                $.getScript(settings.path + "ZeroClipboard.js");
-            } else { // Load in a minified file of all dependencies
-                $.getScript(settings.path + "makiDependencies.min.js");
-            }
-
-            // If contentSrc is filled in, load in that source
-            if (settings.contentSrc) {
-                var contentSrc = (settings.contentSrc.indexOf('/') == 0) ? settings.contentSrc : settings.path + settings.contentSrc;
-                $.getScript(contentSrc);
-            }
+            var settings = makiJS.setup(overrides, this.defaults);
+        } else if (!overrides.hash) {
+            var makiPath = (typeof overrides.path !== 'undefined') ? overrides.path + "/" : "/Scripts/makiSrc/";
+            $.getScript(makiPath + "maki.js");
+                
+            var settings = makiJS.setup(overrides, this.defaults);
+        } else {
+            var settings = $.extend({}, this.defaults, overrides);
         }
 
         // Keep a property of whether maki is activated or not
@@ -105,24 +63,24 @@
         }
 
         // On hash changed, do some checks and initialize maki
-        $(window).on('hashchange', function() {
-            if (settings.hash && location.hash == settings.hash && settings.init == false) {
+        $(window).on('hashchange', function () {
+            if (overrides.hash && location.hash == overrides.hash && settings.init == false) {
                 settings.init = true;
             }
 
             // If hash location is #maki-init and it is initialized
             if (location.hash == "#maki-init" && settings.init == true) {
-                loadMakiDependencies();
+                makiJS.loadDependencies(settings);
                 makiJS.create(settings, $el);
-            // If hash location is NOT #maki-init yet it is set to be initialized, reload the browser
+                // If hash location is NOT #maki-init yet it is set to be initialized, reload the browser
             } else if (location.hash !== "#maki-init" && settings.init == true) {
                 location.reload();
             }
         });
 
         // if there is no hash property filled in, execute maki instantly
-        if (!settings.hash) {
-            loadMakiDependencies();
+        if (!overrides.hash) {
+            makiJS.loadDependencies(settings);
             makiJS.create(settings, $el);
         }
 
