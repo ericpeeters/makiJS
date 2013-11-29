@@ -1,4 +1,4 @@
-/* 
+/**
 @obj    makiJS
 @desc   The object that holds all maki's methods
 */
@@ -14,7 +14,7 @@ var makiJS = {
         // If contentSrc is filled in, load in that source
         if (settings.contentSrc) {
             settings.contentSrc = (settings.contentSrc.indexOf('/') == 0) ? settings.contentSrc : settings.path + "/" + settings.contentSrc;
-            
+
             this.loadConfig(settings);
         }
 
@@ -53,20 +53,27 @@ var makiJS = {
         var sc = settings.contentSrc,
             extension = sc.indexOf('.txt') !== -1 ? "text" : "json";
 
-            console.log(settings.content.indexOf('>'));        
-
         $.ajax({
             dataType: extension,
             url: sc,
             success: function(resp) {
                 if (typeof settings.content == 'string' && settings.content.indexOf('>') == -1) {
                     var elemArr = settings.content;
-                }                    
+                }
 
                 if (extension == "text") {
                     settings.content = resp.split('\n');
                 } else if (extension == "json") {
-                    settings.content = (elemArr !== undefined && resp[elemArr] !== null) ? resp[elemArr] : resp.elements;                        
+                    settings.content = (elemArr !== undefined && resp[elemArr] !== null) ? resp[elemArr] : (function() {
+                        var settArray = [];
+                        $.map(resp, function(val, key) {
+                            for (var i = 0, len = val.length; i < len; i++) {
+                                settArray.push(val[i]);
+                            }
+                        });
+
+                        return settArray;
+                    })();
                 }
             },
             error: function(e) {
@@ -154,16 +161,24 @@ var makiJS = {
 
         // If there is content filled in and copyControls are enabled 
         if (settings.content.length && settings.copyControls == true) {
+            // Create an empty div element as placeholder for content
+            var $element = $('<div />');
+
+            // If append is false, remove all contents from the element before appending
+            if (settings.append == false) {
+                $this.html('');
+            }
+
             // Loop through the content array and display the needed elements on the screen
             $.each(settings.content, function(i, e) {
-
                 e = whiteSpaceCheck(i, e);
                 e = loremReplace(e);
 
                 var $makiWrapper = $('<div class="makiWrapper clearfix"><div class="makiBtnWrapper"><button class="btnCopyEmmet">Copy Emmet</button> <button class="btnCopyHTML">Copy HTML</button></div></div>').data('maki', e),
                     $makiSnippet = $('<div class="makiSnippet clearfix"/>').zencode(e);
 
-                $this.append($makiWrapper.prepend($makiSnippet));
+                // Append it to the temporary div element
+                $element.append($makiWrapper.prepend($makiSnippet));
 
                 if (settings.codeView == true) {
                     var makiHTML = $('div.makiSnippet').eq(i).html(),
@@ -173,10 +188,19 @@ var makiJS = {
                 }
             });
 
+            // Append the html() from the temporary div to the selected element
+            $this.append($element.html());
 
+            // Create the codeView
             prettyPrint();
 
         } else {
+            // Loop through the content array and display the needed elements on the screen
+            var $element = $('<div />');
+            if (settings.append == false) {
+                $this.html('');
+            }
+
             // Loop through the content array and display the needed elements on the screen */
             $.each(settings.content, function(i, e) {
 
@@ -190,13 +214,21 @@ var makiJS = {
                     $makiSnippet.addClass('clearfix');
                 }
 
-                $this.append($makiWrapper.prepend($makiSnippet));
+                // Append it to the temporary div element
+                $element.append($makiWrapper.prepend($makiSnippet));
+
             });
+            // Append the html() from the temporary div to the selected element
+            $this.append($element.html());
         }
 
         // Create the buttons to copy emmet/HTML with
         var copyButtons = $('button.btnCopymaki, button.btnCopyHTML');
-        var clip = new ZeroClipboard(copyButtons);
+
+        // Create a new ZeroClipboard instance
+        var clip = new ZeroClipboard(copyButtons, {
+            moviePath: settings.path + "ZeroClipboard.swf"
+        });
 
         // As soon as the data is requested from one of the buttons, copy the right content to the clipboard */
         clip.on('dataRequested', function(client, args) {
@@ -204,7 +236,7 @@ var makiJS = {
             var snippet = "";
             if ($(this).hasClass('btnCopymaki')) {
                 snippet = $(this).parents('.makiWrapper').data('maki');
-                $(this).parents('.makiBtnWrapper').append($('<div class="copyNotification">Copied maki!</div>'));
+                $(this).parents('.makiBtnWrapper').append($('<div class="copyNotification">Copied Emmet!</div>'));
             }
             if ($(this).hasClass('btnCopyHTML')) {
                 snippet = $(this).parents('.makiWrapper').find('.makiSnippet').html();

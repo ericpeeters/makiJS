@@ -32,6 +32,9 @@ A string that allows you to specify a source file. Maki supports JSON and TXT ex
 ####content:
 An array of emmet strings or a single emmet string, also allows for a multidimensional array to extract elements into different arrays and re-use them in multiple cases. If there is a file with a JSON extension filled in as contentSrc, the content property will accept a string to specify which array in the JSON to use. 
 
+####append:
+A boolean that allows you to specify whether maki replaces the content or appends to the content.
+
 ####copyControls:
 A boolean that allows you to add Copy Emmet & Copy HTML buttons.
 

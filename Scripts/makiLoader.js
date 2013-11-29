@@ -1,12 +1,12 @@
 ;
-(function ($, window, document, undefined) {
+(function($, window, document, undefined) {
     "use strict";
     // Create a global makiSettings array to fill with settings objects
     window.__makiSettings = [];
 
     /* jQuery.prototype.maki */
-    $.fn.maki = function (overrides) {
-        
+    $.fn.maki = function(overrides) {
+
         // Make sure all the ajax requests are sync and nothing is cached
         $.ajaxSetup({
             async: false,
@@ -28,13 +28,14 @@
             contentSrc: false,
             codeView: false,
             copyControls: false,
+            append: false,
             clearfix: true,
             hash: false,
             path: "/Scripts/makiSrc",
             debug: false
         };
-        
-        if(overrides.hash && overrides.hash.indexOf('#') !== 0) {
+
+        if (overrides.hash && overrides.hash.indexOf('#') !== 0) {
             overrides.hash = '#' + overrides.hash;
         }
 
@@ -47,7 +48,7 @@
         } else if (!overrides.hash) {
             var makiPath = (typeof overrides.path !== 'undefined') ? overrides.path + "/" : "/Scripts/makiSrc/";
             $.getScript(makiPath + "maki.js");
-                
+
             var settings = makiJS.setup(overrides, this.defaults);
         } else {
             var settings = $.extend({}, this.defaults, overrides);
@@ -63,7 +64,7 @@
         }
 
         // On hash changed, do some checks and initialize maki
-        $(window).on('hashchange', function () {
+        $(window).on('hashchange', function() {
             if (overrides.hash && location.hash == overrides.hash && settings.init == false) {
                 settings.init = true;
             }
